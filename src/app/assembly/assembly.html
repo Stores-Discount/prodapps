@@ -39,7 +39,13 @@
         <div ui-view="orderList"></div>
     </div>
     <div class="col-md-7" style="position:relative" ng-class="{true: 'draft'}[sync.current.item.state=='done']">
-        <ion-scroll class="prodoo-ion-scroll"  delegate-handle="rightScroll" direction="y">
+        <div class="well" style="height:600px;" ng-click="start(sync.current.item)" ng-show="sync.current.item" ng-hide="sync.current.item.started">
+            <h1>{{ sync.current.item.name }}</h1>
+            <h2>{{ sync.current.item.lot_number }}</h2>
+            <button class="btn btn-success haute-ligne" style="width:100%;"> Start </button>
+        </div>
+        <ion-scroll class="prodoo-ion-scroll"  delegate-handle="rightScroll" direction="y" ng-show="sync.current.item.started">
+
             <div class="well">
                 <h3>{{ sync.current.item.name}}</h3>
                 <div ng-bind-html="sync.current.item.description"></div>
