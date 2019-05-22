@@ -208,7 +208,7 @@ angular.module('prodapps')
       item.started = true;
       //don't block the user with a sync request
       //we won't wait any response
-      jsonRpc.call('mrp.production.workcenter.line', 'start', [item.id]);
+      jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_start', [item.id]);
     }
 
     function fetchPdf(item) {
