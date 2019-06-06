@@ -202,6 +202,15 @@ angular.module('prodapps')
       });
     };
 
+    $scope.start = function(item) {
+      //monitor the begin of each work operation
+      //the end of the work operation managed by odoo during prodoo_action_done
+      item.started = true;
+      //don't block the user with a sync request
+      //we won't wait any response
+      jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_start', [item.id]);
+    }
+
     function fetchPdf(item) {
       //load a pdf async
       return item.label || jsonRpc.call('mrp.production.workcenter.line', 'get_pdf', [item.id]).then(function (d) {
