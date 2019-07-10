@@ -16,6 +16,9 @@ angular.module('prodapps')
 
         newVal._v = newVal._v || {};
 
+        newVal._v.raw_materials = {}
+        newVal._v.raw_materials.expected = { name:'moteur', barcode:'ABC'}, {name:'Rideau', barcode: 'BBB'}];
+
         fetchPdf(newVal);
 
         $scope.fields = newVal.components;
@@ -210,6 +213,20 @@ angular.module('prodapps')
       //we won't wait any response
       jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_start', [item.id]);
     }
+
+    $scope.rawMaterialScan = function(item) {
+      var input = item._v.raw_materials.input
+      var expected = item._v.raw_materials.expected
+      var found = expected.filter(function (mat) {
+        return mat.barcode == input;
+      });
+      if (found.length) {
+        found[0].scanned = true;
+      } else {
+        console.error('Material not found');
+      }
+      item._v.raw_materials.input = ''; // erase field
+    };
 
     function fetchPdf(item) {
       //load a pdf async
