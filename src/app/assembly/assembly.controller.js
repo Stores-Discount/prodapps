@@ -16,8 +16,6 @@ angular.module('prodapps')
 
         newVal._v = newVal._v || {};
 
-        newVal._v.raw_materials = {}
-        newVal._v.raw_materials.expected = { name:'moteur', barcode:'ABC'}, {name:'Rideau', barcode: 'BBB'}];
 
         fetchPdf(newVal);
 
@@ -110,6 +108,11 @@ angular.module('prodapps')
           return l;
         });
 
+        if (!newVal._v.raw_materials) {
+          //do it once because user may have scanned something
+            newVal._v.raw_materials = {}
+            newVal._v.raw_materials.expected = newVal.raw_materials_expected;
+        }
     });
 
     
