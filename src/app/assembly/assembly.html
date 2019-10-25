@@ -121,7 +121,7 @@
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-warning haute-ligne" 
                                             ng-click="print(sync.current.item)" 
-                                            ng-disabled="!sync.current.item._v.label"><span class="glyphicon glyphicon-print"></span>
+                                            ng-disabled="!sync.current.item._v.labels"><span class="glyphicon glyphicon-print"> {{ sync.current.item._v.labels.length }}</span>
                                         </button>
                                     </div>
                                 </td>
@@ -153,7 +153,7 @@
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-warning haute-ligne" 
                                             ng-click="print(sync.current.item)"
-                                            ng-disabled="!sync.current.item._v.label"><span class="glyphicon glyphicon-print"></span>
+                                            ng-disabled="!sync.current.item._v.labels"><span class="glyphicon glyphicon-print">  {{ sync.current.item._v.labels.length }}</span>
                                         </button>
                                     </div>
                                 </td>
