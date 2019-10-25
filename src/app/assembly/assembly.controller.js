@@ -15,6 +15,8 @@ angular.module('prodapps')
             return;
 
         newVal._v = newVal._v || {};
+        newVal._v.started = false; //re-init if user had clicked to another task and he is back now.
+        // it should restart the start trigger
 
 
         fetchPdf(newVal);
