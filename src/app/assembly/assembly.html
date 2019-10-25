@@ -71,8 +71,29 @@
                 </div>
             </div>
 
-            <form name="grid" ng-submit="formSubmitted=1">
+            <form name="raw_materials" ng-submit="rawMaterialScan(sync.current.item)" ng-show="sync.current.item._v.raw_materials.expected.length">
                 <fieldset ng-disabled="sync.current.item.workcenter_id != workcenter">
+                    <!-- Raw materials to be scanned -->
+                    <table class="table table-condensed" style="word-break: break-all;">
+                        <tr>
+                            <th>Material</th>
+                            <th>Barcode</th>
+                        </tr>
+                        <tr ng-repeat="material in sync.current.item._v.raw_materials.expected track by $index"
+                        ng-class="{true: 'locked'}[material.scanned]">
+                            <td>{{ material.name }}</td>
+                            <td>{{ material.barcode }} <input type="checkbox" ng-model="material.scanned" required disabled> {{material.scanned }}</td>
+                        </tr>
+                        <tr>
+                           <td>Scan here all the bardcodes</td>
+                           <td><input name="raw_mat_input" ng-model="sync.current.item._v.raw_materials.input"></td>
+                        </tr>
+                    </table>{{ raw_materials.$invalid }}
+                </fieldset>
+            </form>
+            <form name="grid" ng-submit="formSubmitted=1">
+                <fieldset ng-disabled="sync.current.item.workcenter_id != workcenter || raw_materials.$invalid">
+
                     <table class="table table-condensed" style="word-break: break-all;">
                         <tr>
                             <th ng-repeat="field in fields">{{ field.name }}</th>
