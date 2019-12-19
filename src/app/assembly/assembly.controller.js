@@ -208,14 +208,6 @@ angular.module('prodapps')
       });
     };
 
-    $scope.start = function(item) {
-      //monitor the begin of each work operation
-      //the end of the work operation managed by odoo during prodoo_action_done
-      item._v.started = true;
-      //don't block the user with a sync request
-      //we won't wait any response
-      jsonRpc.call('mrp.production.workcenter.line', 'start', [item.id]);
-    }
 
     $scope.rawMaterialScan = function(item) {
       var input = item._v.raw_materials.input
