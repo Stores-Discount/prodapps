@@ -219,6 +219,14 @@ angular.module('prodapps')
       jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_start', [item.id]);
     }
 
+    $scope.resign = function (item, reason) {
+      //user says he can't continue the process,
+      // he must choose between a list of options
+      jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_resign', [item.id, reason]);
+      item._v.started = false;
+      item.resign_reason = reason;
+    }
+
     $scope.rawMaterialScan = function(item) {
       var input = item._v.raw_materials.input
       var expected = item._v.raw_materials.expected
