@@ -39,12 +39,12 @@
         <div ui-view="orderList"></div>
     </div>
     <div class="col-md-7" style="position:relative" ng-class="{true: 'draft'}[sync.current.item.state=='done']">
-        <div class="well" style="height:600px;" ng-click="start(sync.current.item)" ng-show="sync.current.item" ng-hide="sync.current.item.started">
+        <div class="well" style="height:600px;" ng-click="start(sync.current.item)" ng-show="sync.current.item" ng-hide="sync.current.item._v.started">
             <h1>{{ sync.current.item.name }}</h1>
             <h2>{{ sync.current.item.lot_number }}</h2>
             <button class="btn btn-success haute-ligne" style="width:100%;"> Start </button>
         </div>
-        <ion-scroll class="prodoo-ion-scroll"  delegate-handle="rightScroll" direction="y" ng-show="sync.current.item.started">
+        <ion-scroll class="prodoo-ion-scroll"  delegate-handle="rightScroll" direction="y" ng-show="sync.current.item._v.started">
 
             <div class="well">
                 <h3>{{ sync.current.item.name}}</h3>
@@ -71,8 +71,29 @@
                 </div>
             </div>
 
-            <form name="grid" ng-submit="formSubmitted=1">
+            <form name="raw_materials" ng-submit="rawMaterialScan(sync.current.item)" ng-show="sync.current.item._v.raw_materials.expected.length">
                 <fieldset ng-disabled="sync.current.item.workcenter_id != workcenter">
+                    <!-- Raw materials to be scanned -->
+                    <table class="table table-condensed" style="word-break: break-all;">
+                        <tr>
+                            <th>Material</th>
+                            <th>Barcode</th>
+                        </tr>
+                        <tr ng-repeat="material in sync.current.item._v.raw_materials.expected track by $index"
+                        ng-class="{true: 'locked'}[material.scanned]">
+                            <td>{{ material.name }}</td>
+                            <td>{{ material.barcode }} <input type="checkbox" ng-model="material.scanned" required disabled> {{material.scanned }}</td>
+                        </tr>
+                        <tr>
+                           <td>Scan here all the bardcodes</td>
+                           <td><input name="raw_mat_input" ng-model="sync.current.item._v.raw_materials.input"></td>
+                        </tr>
+                    </table>{{ raw_materials.$invalid }}
+                </fieldset>
+            </form>
+            <form name="grid" ng-submit="formSubmitted=1">
+                <fieldset ng-disabled="sync.current.item.workcenter_id != workcenter || raw_materials.$invalid">
+
                     <table class="table table-condensed" style="word-break: break-all;">
                         <tr>
                             <th ng-repeat="field in fields">{{ field.name }}</th>
@@ -100,7 +121,7 @@
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-warning haute-ligne" 
                                             ng-click="print(sync.current.item)" 
-                                            ng-disabled="!sync.current.item.label"><span class="glyphicon glyphicon-print"></span>
+                                            ng-disabled="!sync.current.item._v.label"><span class="glyphicon glyphicon-print"></span>
                                         </button>
                                     </div>
                                 </td>
@@ -132,7 +153,7 @@
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-warning haute-ligne" 
                                             ng-click="print(sync.current.item)"
-                                            ng-disabled="!sync.current.item.label"><span class="glyphicon glyphicon-print"></span>
+                                            ng-disabled="!sync.current.item._v.label"><span class="glyphicon glyphicon-print"></span>
                                         </button>
                                     </div>
                                 </td>
