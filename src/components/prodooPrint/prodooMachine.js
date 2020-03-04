@@ -17,6 +17,8 @@ angular.module('prodapps').provider('prodooMachine',[ function prodooMachineProv
                     $http.post(prodooConfig.pyWebDriver+'/hw_proxy/opcua_write', req);                    
                 } else if (req.type == 'url') {
                     $http.post(req.url, req.data);
+                } else if (req.type == 'plc') {
+                    $http.post(prodooConfig.pyWebDriver+'/hw_proxy/plc_write', req);                    
                 }
             };
     }];
