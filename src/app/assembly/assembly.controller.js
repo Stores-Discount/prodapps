@@ -18,6 +18,8 @@ angular.module('prodapps')
         newVal._v.started = false; //re-init if user had clicked to another task and he is back now.
         // it should restart the start trigger
 
+        newVal._v.resign_reasons = false; //init the variable to be in a stable state
+        // when changing WO withot submitting the form
 
         fetchPdf(newVal);
 
