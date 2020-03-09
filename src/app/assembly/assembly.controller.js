@@ -247,6 +247,7 @@ angular.module('prodapps')
       //load a pdf async
       return item._v.labels || jsonRpc.call('mrp.production.workcenter.line', 'get_pdf', [item.id]).then(function (d) {
         item._v.labels = d;
+
       });
     }
 
