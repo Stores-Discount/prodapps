@@ -222,30 +222,6 @@ angular.module('prodapps')
       item._v.raw_materials.input = ''; // erase field
     };
 
-    $scope.start = function(item) {
-      //monitor the begin of each work operation
-      //the end of the work operation managed by odoo during prodoo_action_done
-      item._v.started = true;
-      //don't block the user with a sync request
-      //we won't wait any response
-      jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_start', [item.id]);
-    }
-
-
-    //$scope.rawMaterialScan = function(item) {
-    //  var input = item._v.raw_materials.input
-    //  var expected = item._v.raw_materials.expected
-    //  var found = expected.filter(function (mat) {
-    //    return mat.barcode == input;
-    //  });
-    //  if (found.length) {
-    //    found[0].scanned = true;
-    //  } else {
-    //    console.error('Material not found');
-    //  }
-    //  item._v.raw_materials.input = ''; // erase field
-    //};
-
     function fetchPdf(item) {
       //load a pdf async
       return item._v.labels || jsonRpc.call('mrp.production.workcenter.line', 'get_pdf', [item.id]).then(function (d) {
