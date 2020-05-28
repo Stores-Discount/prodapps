@@ -10,6 +10,9 @@ angular.module('prodapps')
     $scope.fields = [];
     $scope.sameLotNumber = [];
 
+    // scrap local item
+    $scope.scrap = {add: false};
+
     $scope.$watch('sync.current.item', function (newVal) {
         if (!newVal)
             return;
@@ -115,8 +118,6 @@ angular.module('prodapps')
         }
     });
 
-    
-
     $scope.checkLocks = function () {
     //check if there is some lines still locked
     //usefull because the "ok" buttn should be disabled otherwise
@@ -128,7 +129,6 @@ angular.module('prodapps')
 
       return $scope.sync.current.item._v.lines.filter(function (l ){ return l.lock==false; }).length !== 0;
     };
-
 
     $scope.book = function(item) {
       //assign the task to the current workcenter
@@ -148,6 +148,7 @@ angular.module('prodapps')
       line.rack = ''; //erase content
       line.lock = false; //unlock the line
     };
+
     $scope.focusOnLineScan = function(line, idx) {
       //when scan input is focused
       line.scans[idx] = '';//erase content
@@ -181,10 +182,16 @@ angular.module('prodapps')
       });
     };
 
+    $scope.addScrap = function(item) {
+      console.log(item),
+      console.log(scrap)
+    };
+
     $scope.print = function (item, qte) {
         $notification('Printing...');
         prodooPrint(item, qte);
     };
+
     $scope.machine = function(item) {
         prodooMachine(item);
     };
@@ -222,8 +229,17 @@ angular.module('prodapps')
       item._v.raw_materials.input = ''; // erase field
     };
 
+    $scope.start = function(item) {
+      //monitor the begin of each work operation
+      //the end of the work operation managed by odoo during prodoo_action_done
+      item._v.started = true;
+      //don't block the user with a sync request
+      //we won't wait any response
+      jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_start', [item.id]);
+    }
+
     function fetchPdf(item) {
-      //load a pdf async
+      // load a pdf async
       return item._v.labels || jsonRpc.call('mrp.production.workcenter.line', 'get_pdf', [item.id]).then(function (d) {
         item._v.labels = d;
 
@@ -231,8 +247,8 @@ angular.module('prodapps')
     }
 
     function createArray(length) {
-    //create and fill with null an array of length
-    // (Array.prototype.fill() is not ready yet / polyfill instead :
+      // create and fill with null an array of length
+      // (Array.prototype.fill() is not ready yet / polyfill instead :
       var a = [], l = 0;
       for (l = 0; l < length; l++) {
         a.push(null);

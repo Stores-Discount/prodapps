@@ -39,7 +39,15 @@
         <div ui-view="orderList"></div>
     </div>
     <div class="col-md-7" style="position:relative" ng-class="{true: 'draft'}[sync.current.item.state=='done']">
+        <!-- Revert start button -->
+        <!-- <div class="well" style="height:600px;" ng-click="start(sync.current.item)" ng-show="sync.current.item" ng-hide="sync.current.item._v.started">
+            <h1>{{ sync.current.item.name }}</h1>
+            <h2>{{ sync.current.item.lot_number }}</h2>
+            <button class="btn btn-success haute-ligne" style="width:100%;"> Start </button>
+        </div> -->
+        <!-- <ion-scroll class="prodoo-ion-scroll"  delegate-handle="rightScroll" direction="y" ng-show="sync.current.item._v.started"> -->
             <ion-scroll class="prodoo-ion-scroll"  delegate-handle="rightScroll" direction="y">
+        <!-- End revert start button -->
             <div class="well">
                 <h3>{{ sync.current.item.name}}</h3>
                 <div ng-bind-html="sync.current.item.description"></div>
@@ -52,6 +60,7 @@
                 </table>
             </div>
 
+            <!-- Book operation -->
             <div>
                 <div class="btn-group btn-group-justified">
                     <div class="btn-group" ng-show="sync.current.item.workcenter_id != workcenter">
@@ -65,6 +74,7 @@
                 </div>
             </div>
 
+            <!-- Raw materials scan operation -->
             <form name="raw_materials" ng-submit="rawMaterialScan(sync.current.item)" ng-show="sync.current.item._v.raw_materials.expected.length">
                 <fieldset ng-disabled="sync.current.item.workcenter_id != workcenter">
                     <!-- Raw materials to be scanned -->
@@ -85,6 +95,44 @@
                     </table>{{ raw_materials.$invalid }}
                 </fieldset>
             </form>
+
+
+            <!-- Scrap managment operations -->
+            <form name="scrap_add" ng-submit="addScrap(sync.current.item)" ng-show="scrap.add" class="well">
+                <!-- Raw materials to be scanned -->
+                <p class="h4 mb-4">Add new scrap</p>
+                <fieldset>
+                    <table class="table table-condensed" style="word-break: break-all;">
+                        <tr>
+                            <th>Weight</th>
+                            <th>Height</th>
+                            <th>Location</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input class="haute-ligne" required="true" size="16" type="number" ng-model="scrap.weight">
+                            </td>
+                            <td>
+                                <input class="haute-ligne" required="true" size="16" type="number" ng-model="scrap.height">
+                            </td>
+                            <td>
+                                <input class="haute-ligne" required="true" size="16" type="text" ng-model="scrap.location">
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="btn-group btn-group-justified">
+                        <div class="btn-group">
+                            <button class="btn btn-success haute-ligne" 
+                                ng-click="addScrap(sync.current.item)"> Add
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+
+            </form>
+
+
+            <!-- Submit and confirm operations -->
             <form name="grid" ng-submit="formSubmitted=1">
                 <fieldset ng-disabled="sync.current.item.workcenter_id != workcenter || raw_materials.$invalid">
 
@@ -109,6 +157,14 @@
                                 <td>
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-default haute-ligne" ng-show="sync.current.item.machine.type" ng-click="machine(sync.current.item)"><span class="glyphicon glyphicon-flag"></span></button>
+                                    </div> 
+                                    <!-- add scrap -->
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default haute-ligne" ng-click="(scrap.add) ? (scrap.add=false):(scrap.add=true)"><span class="glyphicon glyphicon-plus-sign"></span></button>
+                                    </div> 
+                                    <!-- search scrap -->
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default haute-ligne" ng-click="searchScrap"><span class="glyphicon glyphicon-question-sign"></span></button>
                                     </div> 
                                 </td>
                                 <td>
