@@ -184,7 +184,56 @@ angular.module('prodapps')
 
     $scope.addScrap = function(item) {
       console.log(item),
-      console.log(scrap)
+      console.log($scope.scrap)
+
+      // hide add scrap form
+      $scope.scrap.add = false;
+
+      // $notification('Saving scrap');
+
+      // jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item, $scope.scrap ]).then(function () {
+      //   $notification('Scrap saved');
+      //   // clear scrap data
+      //   $scope.scrap = {add: false};
+      // }, function () {
+      //   $notification('an error has occured');
+      // });
+
+    };
+
+    $scope.searchScrap = function() {
+      let temp = [];
+      if ($scope.scrap.search) {
+        $scope.scrap.search = false;
+      } else {
+        temp = [
+          {
+            length:1023,
+            heigth:2045,
+            location: "A1"
+          },        
+          {
+            length:2561,
+            heigth:852,
+            location: "A2"
+          },        
+          {
+            length:1670,
+            heigth:1000,
+            location: "A3"
+          }
+        ]
+        $scope.scrap.search = true;
+        $scope.scrap.avaiable = temp;
+      }
+
+      return true;
+    };
+
+    $scope.useScrap = function(scrapItemtoUse, order) {
+      $scope.scrap.search = false;
+      console.log(scrapItemtoUse);
+      console.log(order);
     };
 
     $scope.print = function (item, qte) {

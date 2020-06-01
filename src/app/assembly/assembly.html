@@ -97,20 +97,20 @@
             </form>
 
 
-            <!-- Scrap managment operations -->
+            <!-- Scrap add operation -->
             <form name="scrap_add" ng-submit="addScrap(sync.current.item)" ng-show="scrap.add" class="well">
                 <!-- Raw materials to be scanned -->
                 <p class="h4 mb-4">Add new scrap</p>
                 <fieldset>
                     <table class="table table-condensed" style="word-break: break-all;">
                         <tr>
-                            <th>Weight</th>
+                            <th>Length</th>
                             <th>Height</th>
                             <th>Location</th>
                         </tr>
                         <tr>
                             <td>
-                                <input class="haute-ligne" required="true" size="16" type="number" ng-model="scrap.weight">
+                                <input class="haute-ligne" required="true" size="16" type="number" ng-model="scrap.length">
                             </td>
                             <td>
                                 <input class="haute-ligne" required="true" size="16" type="number" ng-model="scrap.height">
@@ -122,8 +122,8 @@
                     </table>
                     <div class="btn-group btn-group-justified">
                         <div class="btn-group">
-                            <button class="btn btn-success haute-ligne" 
-                                ng-click="addScrap(sync.current.item)"> Add
+                            <button type="submit" class="btn btn-success haute-ligne" 
+                                > Add
                             </button>
                         </div>
                     </div>
@@ -131,6 +131,40 @@
 
             </form>
 
+            <!-- Scrap use operation -->
+            <form name="scrap_use" ng-submit="" ng-show="scrap.search" class="well">
+                <!-- Raw materials to be scanned -->
+                <p class="h4 mb-4">Select scrap to use</p>
+                <fieldset>
+                    <table class="table table-condensed" style="word-break: break-all;">
+                        <tr>
+                            <th>Length</th>
+                            <th>Height</th>
+                            <th>Location</th>
+                            <th>Option</th>
+                        </tr>
+                        <tr ng-repeat="item in scrap.avaiable">
+                            <td>
+                                {{ item.length }}
+                            </td>
+                            <td>
+                                {{ item.heigth }}
+                            </td>
+                            <td>
+                                {{ item.location }}
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default haute-ligne" ng-click="useScrap(item, sync.current.item)"><span class="glyphicon glyphicon-question-sign"></span></button>
+                                </div> 
+                            </td>
+
+                        </tr>
+                    </table>
+
+                </fieldset>
+
+            </form>
 
             <!-- Submit and confirm operations -->
             <form name="grid" ng-submit="formSubmitted=1">
@@ -164,7 +198,7 @@
                                     </div> 
                                     <!-- search scrap -->
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-default haute-ligne" ng-click="searchScrap"><span class="glyphicon glyphicon-question-sign"></span></button>
+                                        <button type="button" class="btn btn-default haute-ligne" ng-click="searchScrap()"><span class="glyphicon glyphicon-question-sign"></span></button>
                                     </div> 
                                 </td>
                                 <td>
