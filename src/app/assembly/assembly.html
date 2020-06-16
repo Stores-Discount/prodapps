@@ -96,75 +96,98 @@
                 </fieldset>
             </form>
 
+            <!-- Scrap select action -->
+            <div class="panel panel-default" ng-show="sync.current.item.scrap_managment">
+                <div class="panel-heading">Scrap actions</div>
+                <div class="panel-body">
 
-            <!-- Scrap add operation -->
-            <form name="scrap_add" ng-submit="addScrap(sync.current.item)" ng-show="scrap.add" class="well">
-                <!-- Raw materials to be scanned -->
-                <p class="h4 mb-4">Add new scrap</p>
-                <fieldset>
-                    <table class="table table-condensed" style="word-break: break-all;">
-                        <tr>
-                            <th>Length</th>
-                            <th>Height</th>
-                            <th>Location</th>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input class="haute-ligne" required="true" size="16" type="number" ng-model="scrap.length">
-                            </td>
-                            <td>
-                                <input class="haute-ligne" required="true" size="16" type="number" ng-model="scrap.height">
-                            </td>
-                            <td>
-                                <input class="haute-ligne" required="true" size="16" type="text" ng-model="scrap.location">
-                            </td>
-                        </tr>
-                    </table>
-                    <div class="btn-group btn-group-justified">
-                        <div class="btn-group">
-                            <button type="submit" class="btn btn-success haute-ligne" 
-                                > Add
-                            </button>
+                    <div class="input-group">
+                        <div class="input-group-addon" >
+                            <label for="searchScrapInput">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </label>
                         </div>
+                        <input ng-model="scrap.material" class="form-control haute-ligne" id="searchScrapInput" ng-keypress="searchScrapEnter($event)" placeholder="search scrap" ng-focus="eraseScrapSearch()">
+                        <!-- scrap action buttons -->
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary haute-ligne" ng-click="searchScrap(sync.current.item)" ng-disabled="!scrap.canSearch">Search</button>
+                            <button type="button" class="btn btn-success haute-ligne" ng-click="(scrap.add) ? (scrap.add=false):(scrap.add=true)" style="margin-left: 5px;">Add</button>
+                        </span>
                     </div>
-                </fieldset>
 
-            </form>
-
-            <!-- Scrap use operation -->
-            <form name="scrap_use" ng-submit="" ng-show="scrap.search" class="well">
-                <!-- Raw materials to be scanned -->
-                <p class="h4 mb-4">Select scrap to use</p>
-                <fieldset>
-                    <table class="table table-condensed" style="word-break: break-all;">
-                        <tr>
-                            <th>Length</th>
-                            <th>Height</th>
-                            <th>Location</th>
-                            <th>Option</th>
-                        </tr>
-                        <tr ng-repeat="item in scrap.avaiable">
-                            <td>
-                                {{ item.length }}
-                            </td>
-                            <td>
-                                {{ item.heigth }}
-                            </td>
-                            <td>
-                                {{ item.location }}
-                            </td>
-                            <td>
+                    <!-- Scrap add operation -->
+                    <form name="scrap_add" ng-submit="addScrap(sync.current.item)" ng-show="scrap.add">
+                        <!-- Raw materials to be scanned -->
+                        <p class="h4 mb-4">Add new scrap</p>
+                        <fieldset>
+                            <table class="table table-condensed" style="word-break: break-all;">
+                                <tr>
+                                    <th>Width (mm)</th>
+                                    <th>Height (mm)</th>
+                                    <th>Material (A00 code)</th>
+                                    <th>Location</th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input class="haute-ligne col-md-6" required="true" size="16" type="number" ng-model="scrap.width">
+                                    </td>
+                                    <td>
+                                        <input class="haute-ligne col-md-6" required="true" size="16" type="number" ng-model="scrap.height">
+                                    </td>
+                                    <td>
+                                        <input class="haute-ligne col-md-10" required="true" size="16" type="text" ng-model="scrap.material">
+                                    </td>
+                                    <td>
+                                        <input class="haute-ligne col-md-10" required="true" size="16" type="text" ng-model="scrap.location">
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="btn-group btn-group-justified">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-default haute-ligne" ng-click="useScrap(item, sync.current.item)"><span class="glyphicon glyphicon-question-sign"></span></button>
-                                </div> 
-                            </td>
+                                    <button type="submit" class="btn btn-success haute-ligne" 
+                                        > Add
+                                    </button>
+                                </div>
+                            </div>
+                        </fieldset>
 
-                        </tr>
-                    </table>
+                    </form>
 
-                </fieldset>
+                    <br/>
 
-            </form>
+                    <!-- Scrap use operation -->
+                    <form name="scrap_use" ng-submit="" ng-show="scrap.search">
+                        <fieldset>
+                            <table class="table table-condensed table-bordered" style="word-break: break-all;">
+                                <tr>
+                                    <th>Width</th>
+                                    <th>Height</th>
+                                    <th>Location</th>
+                                    <th>Option</th>
+                                </tr>
+                                <tr class="success" ng-repeat="item in scrap.avaiable">
+                                    <td>
+                                        {{ item.width }}
+                                    </td>
+                                    <td>
+                                        {{ item.height }}
+                                    </td>
+                                    <td>
+                                        {{ item.location }}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default haute-ligne" ng-click="useScrap(item, sync.current.item)"><span class="glyphicon glyphicon-question-sign"></span></button>
+                                        </div> 
+                                    </td>
+
+                                </tr>
+                            </table>
+
+                        </fieldset>
+                    </form>               
+                </div>
+            </div>
 
             <!-- Submit and confirm operations -->
             <form name="grid" ng-submit="formSubmitted=1">
@@ -191,14 +214,6 @@
                                 <td>
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-default haute-ligne" ng-show="sync.current.item.machine.type" ng-click="machine(sync.current.item)"><span class="glyphicon glyphicon-flag"></span></button>
-                                    </div> 
-                                    <!-- add scrap -->
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default haute-ligne" ng-click="(scrap.add) ? (scrap.add=false):(scrap.add=true)"><span class="glyphicon glyphicon-plus-sign"></span></button>
-                                    </div> 
-                                    <!-- search scrap -->
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default haute-ligne" ng-click="searchScrap()"><span class="glyphicon glyphicon-question-sign"></span></button>
                                     </div> 
                                 </td>
                                 <td>

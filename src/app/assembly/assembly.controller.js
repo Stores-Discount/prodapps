@@ -182,59 +182,75 @@ angular.module('prodapps')
       });
     };
 
+    $scope.$watch('scrap.material', function (newVal) {
+      //basically when a search is performed in oderList.html
+      if (newVal)
+         $scope.scrap.canSearch = true;
+    });
+
+    $scope.$watch('scrap.add', function (newVal) {
+      //basically when a search is performed in oderList.html
+      if (newVal)
+        $scope.scrap.search = false;
+    });
+
     $scope.addScrap = function(item) {
-      console.log(item),
-      console.log($scope.scrap)
 
-      // hide add scrap form
-      $scope.scrap.add = false;
+      $notification('Saving scrap');
 
-      // $notification('Saving scrap');
-
-      // jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_done', [item, $scope.scrap ]).then(function () {
-      //   $notification('Scrap saved');
-      //   // clear scrap data
-      //   $scope.scrap = {add: false};
-      // }, function () {
-      //   $notification('an error has occured');
-      // });
+      jsonRpc.call('mrp.production.workcenter.line', 'scrap_add', [item.id,$scope.scrap]).then(function () {
+        $notification('Scrap saved');
+        // clear scrap data
+        $scope.scrap = {add: false};
+      }, function () {
+        $notification('an error has occured');
+      });
 
     };
 
-    $scope.searchScrap = function() {
-      let temp = [];
-      if ($scope.scrap.search) {
-        $scope.scrap.search = false;
-      } else {
-        temp = [
-          {
-            length:1023,
-            heigth:2045,
-            location: "A1"
-          },        
-          {
-            length:2561,
-            heigth:852,
-            location: "A2"
-          },        
-          {
-            length:1670,
-            heigth:1000,
-            location: "A3"
-          }
-        ]
+    $scope.searchScrap = function(item) {
+      $notification('Searching scrap');
+      jsonRpc.call('mrp.production.workcenter.line', 'scrap_search', [item.id,$scope.scrap]).then(function (data) {
         $scope.scrap.search = true;
-        $scope.scrap.avaiable = temp;
-      }
-
+        $scope.scrap.avaiable = data;
+      }, function () {
+        $notification('an error has occured');
+      });
+      
       return true;
     };
 
-    $scope.useScrap = function(scrapItemtoUse, order) {
-      $scope.scrap.search = false;
+    $scope.useScrap = function(scrapItemtoUse, item) {
+
       console.log(scrapItemtoUse);
-      console.log(order);
+      console.log(item);
+
+      $notification('Take scrap for use');
+      jsonRpc.call('mrp.production.workcenter.line', 'scrap_use', [item.id,scrapItemtoUse]).then(function (data) {
+        $scope.scrap.search = false;
+        $scope.scrap.add = false;
+        $scope.scrap.avaiable = {};
+      }, function () {
+        $notification('an error has occured');
+      });
+      
+      return true;
     };
+
+    $scope.searchScrapEnter = function(keyEvent) {
+      if (keyEvent.which === 13)
+        $scope.searchScrap($scope.sync.current.item);
+    }
+
+    $scope.eraseScrapSearch = function (status) {
+      delete $scope.scrap.material;
+      $scope.scrap.canSearch = false;
+
+      $scope.scrap.search = false;
+      delete $scope.scrap.avaiable;
+
+      $scope.scrap.add = false;
+  };
 
     $scope.print = function (item, qte) {
         $notification('Printing...');
