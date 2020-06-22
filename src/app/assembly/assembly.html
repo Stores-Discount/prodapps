@@ -39,15 +39,16 @@
         <div ui-view="orderList"></div>
     </div>
     <div class="col-md-7" style="position:relative" ng-class="{true: 'draft'}[sync.current.item.state=='done']">
-        <!-- Revert start button -->
-        <!-- <div class="well" style="height:600px;" ng-click="start(sync.current.item)" ng-show="sync.current.item" ng-hide="sync.current.item._v.started">
+        <div class="well" style="height:600px;" ng-click="start(sync.current.item)" ng-show="sync.current.item" ng-hide="sync.current.item._v.started">
             <h1>{{ sync.current.item.name }}</h1>
             <h2>{{ sync.current.item.lot_number }}</h2>
-            <button class="btn btn-success haute-ligne" style="width:100%;"> Start </button>
-        </div> -->
-        <!-- <ion-scroll class="prodoo-ion-scroll"  delegate-handle="rightScroll" direction="y" ng-show="sync.current.item._v.started"> -->
-            <ion-scroll class="prodoo-ion-scroll"  delegate-handle="rightScroll" direction="y">
-        <!-- End revert start button -->
+            <button class="btn btn-success haute-ligne" style="width:100%;" ng-hide="sync.current.item.resign_reason"> Start </button>
+            <div ng-show="sync.current.item.resign_reason">
+                <button class="btn btn-success haute-ligne" style="width:100%;">Continue</button>
+                <p>{{sync.current.item.resign_reason}}</p>
+            </div>
+        </div>
+        <ion-scroll class="prodoo-ion-scroll"  delegate-handle="rightScroll" direction="y" ng-show="sync.current.item._v.started">
             <div class="well">
                 <h3>{{ sync.current.item.name}}</h3>
                 <div ng-bind-html="sync.current.item.description"></div>
@@ -192,7 +193,54 @@
             <!-- Submit and confirm operations -->
             <form name="grid" ng-submit="formSubmitted=1">
                 <fieldset ng-disabled="sync.current.item.workcenter_id != workcenter || raw_materials.$invalid">
-
+                    <div>
+                        <button type="button" class="btn btn-default haute-ligne" ng-click="resign_reasons = !resign_reasons"><span class="glyphicon glyphicon-pause"></span>Resign</button>
+                        <table class="table table-condensed" ng-show="resign_reasons">
+                            <tr><td>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default haute-ligne"
+                                    ng-click="resign(sync.current.item, 'shortage')">
+    Components shortage / Brak komponentów
+                                    </button>
+                                </div>
+                            </td></tr>
+                            <tr><td>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default haute-ligne"
+                                    ng-click="resign(sync.current.item, 'quality_issue')">
+    Quality issue / Wada jakościowa
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                            <tr><td>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default haute-ligne"
+                                    ng-click="resign(sync.current.item, 'not_ready')">
+    Not ready / Nie gotowe
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr><td>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default haute-ligne"
+                                    ng-click="resign(sync.current.item, 'leader_decision')">
+    Leader decision / Decyzja Lidera
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr><td>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default haute-ligne"
+                                    ng-click="resign(sync.current.item, 'no_time')">
+    No time / Brak czasu
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </div>
                     <table class="table table-condensed" style="word-break: break-all;">
                         <tr>
                             <th ng-repeat="field in fields">{{ field.name }}</th>
