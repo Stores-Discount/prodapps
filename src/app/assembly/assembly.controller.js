@@ -10,6 +10,9 @@ angular.module('prodapps')
     $scope.fields = [];
     $scope.sameLotNumber = [];
 
+    // scrap local item
+    $scope.scrap = {add: false};
+
     $scope.$watch('sync.current.item', function (newVal) {
         if (!newVal)
             return;
@@ -117,8 +120,6 @@ angular.module('prodapps')
         }
     });
 
-    
-
     $scope.checkLocks = function () {
     //check if there is some lines still locked
     //usefull because the "ok" buttn should be disabled otherwise
@@ -130,7 +131,6 @@ angular.module('prodapps')
 
       return $scope.sync.current.item._v.lines.filter(function (l ){ return l.lock==false; }).length !== 0;
     };
-
 
     $scope.book = function(item) {
       //assign the task to the current workcenter
@@ -150,6 +150,7 @@ angular.module('prodapps')
       line.rack = ''; //erase content
       line.lock = false; //unlock the line
     };
+
     $scope.focusOnLineScan = function(line, idx) {
       //when scan input is focused
       line.scans[idx] = '';//erase content
@@ -183,10 +184,81 @@ angular.module('prodapps')
       });
     };
 
+    $scope.$watch('scrap.material', function (newVal) {
+      //basically when a search is performed in oderList.html
+      if (newVal)
+         $scope.scrap.canSearch = true;
+    });
+
+    $scope.$watch('scrap.add', function (newVal) {
+      //basically when a search is performed in oderList.html
+      if (newVal)
+        $scope.scrap.search = false;
+    });
+
+    $scope.addScrap = function(item) {
+
+      $notification('Saving scrap');
+
+      jsonRpc.call('mrp.production.workcenter.line', 'scrap_add', [item.id,$scope.scrap]).then(function () {
+        $notification('Scrap saved');
+        // clear scrap data
+        $scope.scrap = {add: false};
+      }, function () {
+        $notification('an error has occured');
+      });
+
+    };
+
+    $scope.searchScrap = function(item) {
+      $notification('Searching scrap');
+      jsonRpc.call('mrp.production.workcenter.line', 'scrap_search', [item.id,$scope.scrap]).then(function (data) {
+        $scope.scrap.search = true;
+        $scope.scrap.avaiable = data;
+      }, function () {
+        $notification('an error has occured');
+      });
+      
+      return true;
+    };
+
+    $scope.useScrap = function(scrapItemtoUse, item) {
+
+      console.log(scrapItemtoUse);
+      console.log(item);
+
+      $notification('Take scrap for use');
+      jsonRpc.call('mrp.production.workcenter.line', 'scrap_use', [item.id,scrapItemtoUse]).then(function (data) {
+        $scope.scrap.search = false;
+        $scope.scrap.add = false;
+        $scope.scrap.avaiable = {};
+      }, function () {
+        $notification('an error has occured');
+      });
+      
+      return true;
+    };
+
+    $scope.searchScrapEnter = function(keyEvent) {
+      if (keyEvent.which === 13)
+        $scope.searchScrap($scope.sync.current.item);
+    }
+
+    $scope.eraseScrapSearch = function (status) {
+      delete $scope.scrap.material;
+      $scope.scrap.canSearch = false;
+
+      $scope.scrap.search = false;
+      delete $scope.scrap.avaiable;
+
+      $scope.scrap.add = false;
+  };
+
     $scope.print = function (item, qte) {
         $notification('Printing...');
         prodooPrint(item, qte);
     };
+
     $scope.machine = function(item) {
         prodooMachine(item);
     };
@@ -210,15 +282,6 @@ angular.module('prodapps')
       });
     };
 
-    $scope.start = function(item) {
-      //monitor the begin of each work operation
-      //the end of the work operation managed by odoo during prodoo_action_done
-      item._v.started = true;
-      //don't block the user with a sync request
-      //we won't wait any response
-      jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_start', [item.id]);
-    }
-
     $scope.rawMaterialScan = function(item) {
       var input = item._v.raw_materials.input
       var expected = item._v.raw_materials.expected
@@ -233,16 +296,26 @@ angular.module('prodapps')
       item._v.raw_materials.input = ''; // erase field
     };
 
+    $scope.start = function(item) {
+      //monitor the begin of each work operation
+      //the end of the work operation managed by odoo during prodoo_action_done
+      item._v.started = true;
+      //don't block the user with a sync request
+      //we won't wait any response
+      jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_start', [item.id]);
+    }
+
     function fetchPdf(item) {
-      //load a pdf async
+      // load a pdf async
       return item._v.labels || jsonRpc.call('mrp.production.workcenter.line', 'get_pdf', [item.id]).then(function (d) {
         item._v.labels = d;
+
       });
     }
 
     function createArray(length) {
-    //create and fill with null an array of length
-    // (Array.prototype.fill() is not ready yet / polyfill instead :
+      // create and fill with null an array of length
+      // (Array.prototype.fill() is not ready yet / polyfill instead :
       var a = [], l = 0;
       for (l = 0; l < length; l++) {
         a.push(null);
