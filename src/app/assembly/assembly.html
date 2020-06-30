@@ -110,22 +110,21 @@
                         <input ng-model="scrap.material" class="form-control haute-ligne" id="searchScrapInput" ng-keypress="searchScrapEnter($event)" placeholder="search scrap" ng-focus="eraseScrapSearch()">
                         <!-- scrap action buttons -->
                         <span class="input-group-btn">
-                            <button type="button" class="btn btn-primary haute-ligne" ng-click="searchScrap(sync.current.item)" ng-disabled="!scrap.canSearch">Search</button>
+                            <button type="button" class="btn btn-primary haute-ligne" ng-click="searchScrap(sync.current.item)">Search</button>
                             <button type="button" class="btn btn-success haute-ligne" ng-click="(scrap.add) ? (scrap.add=false):(scrap.add=true)" style="margin-left: 5px;">Add</button>
                         </span>
                     </div>
 
                     <!-- Scrap add operation -->
                     <form name="scrap_add" ng-submit="addScrap(sync.current.item)" ng-show="scrap.add">
-                        <!-- Raw materials to be scanned -->
                         <p class="h4 mb-4">Add new scrap</p>
                         <fieldset>
                             <table class="table table-condensed" style="word-break: break-all;">
                                 <tr>
                                     <th>Height (mm)</th>
                                     <th>Width (mm)</th>
-                                    <th>Material (A00 code)</th>
                                     <th>Location</th>
+                                    <th>Material (A00 code)</th>
                                 </tr>
                                 <tr>
                                     <td>
@@ -135,10 +134,10 @@
                                         <input class="haute-ligne col-md-6" required="true" size="16" type="number" ng-model="scrap.width">
                                     </td>
                                     <td>
-                                        <input class="haute-ligne col-md-10" required="true" size="16" type="text" ng-model="scrap.material">
+                                        <input class="haute-ligne col-md-10" required="true" size="16" type="text" ng-model="scrap.location">
                                     </td>
                                     <td>
-                                        <input class="haute-ligne col-md-10" required="true" size="16" type="text" ng-model="scrap.location">
+                                        <input class="haute-ligne col-md-10" size="16" type="text" ng-model="scrap.material">
                                     </td>
                                 </tr>
                             </table>
