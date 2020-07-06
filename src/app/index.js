@@ -35,6 +35,14 @@ angular.module('prodapps', ['ngAnimate', 'ngSanitize', 'ui.router', 'mgcrea.ngSt
                     templateUrl: 'app/assembly/orderList.html'
                 }
             }
+        })        
+        .state('main.configuration', {
+            url: '/configuration',
+            templateUrl: 'app/configuration/configuration.html',
+            controller: 'ConfigurationCtrl',
+            resolve: {
+                'apps': 'apps'
+            }
         })
         ;
 
