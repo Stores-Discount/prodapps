@@ -163,6 +163,20 @@ angular.module('prodapps')
       return grid[idx].$valid;
     };
 
+    $scope.printAfterScan = function(item,grid, idx){
+      if (!item.enablePrintAfterScan){
+        return true;
+      } else {
+        return grid[idx].$valid;
+      }
+    }
+
+    $scope.$watch('line.rack', function (newVal) {
+      //basically when a search is performed in oderList.html
+      if (newVal)
+        $scope.scrap.search = false;
+    });
+
     $scope.do = function(item) {
       $notification('Pending');
       item._v.lock = true;
