@@ -18,7 +18,11 @@ angular.module('prodapps')
             return;
 
         newVal._v = newVal._v || {};
+        newVal._v.started = false; //re-init if user had clicked to another task and he is back now.
+        // it should restart the start trigger
 
+        newVal._v.resign_reasons = false; //init the variable to be in a stable state
+        // when changing WO withot submitting the form
 
         fetchPdf(newVal);
 
@@ -279,6 +283,23 @@ angular.module('prodapps')
         }, 1000);
       });
     };
+
+    $scope.start = function(item) {
+      //monitor the begin of each work operation
+      //the end of the work operation managed by odoo during prodoo_action_done
+      item._v.started = true;
+      //don't block the user with a sync request
+      //we won't wait any response
+      jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_start', [item.id]);
+    }
+
+    $scope.resign = function (item, reason) {
+      //user says he can't continue the process,
+      // he must choose between a list of options
+      jsonRpc.call('mrp.production.workcenter.line', 'prodoo_action_resign', [item.id, reason]);
+      item._v.started = false;
+      item.resign_reason = reason;
+    }
 
     $scope.rawMaterialScan = function(item) {
       var input = item._v.raw_materials.input
