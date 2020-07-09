@@ -186,12 +186,6 @@ angular.module('prodapps')
       });
     };
 
-    $scope.$watch('scrap.material', function (newVal) {
-      //basically when a search is performed in oderList.html
-      if (newVal)
-         $scope.scrap.canSearch = true;
-    });
-
     $scope.$watch('scrap.add', function (newVal) {
       //basically when a search is performed in oderList.html
       if (newVal)
@@ -213,6 +207,9 @@ angular.module('prodapps')
     };
 
     $scope.searchScrap = function(item) {
+      
+      $scope.scrap.add = false
+      
       $notification('Searching scrap');
       jsonRpc.call('mrp.production.workcenter.line', 'scrap_search', [item.id,$scope.scrap]).then(function (data) {
         $scope.scrap.search = true;
@@ -225,9 +222,6 @@ angular.module('prodapps')
     };
 
     $scope.useScrap = function(scrapItemtoUse, item) {
-
-      console.log(scrapItemtoUse);
-      console.log(item);
 
       $notification('Take scrap for use');
       jsonRpc.call('mrp.production.workcenter.line', 'scrap_use', [item.id,scrapItemtoUse]).then(function (data) {
