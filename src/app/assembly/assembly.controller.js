@@ -350,4 +350,6 @@ angular.module('prodapps')
       return a;
     }
 
+    $scope.searchScrap($scope.sync.current.item);
+
 }]);
