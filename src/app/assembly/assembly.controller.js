@@ -120,6 +120,7 @@ angular.module('prodapps')
             newVal._v.raw_materials = {}
             newVal._v.raw_materials.expected = newVal.raw_materials_expected;
         }
+        $scope.searchScrap(newVal);
     });
 
     $scope.checkLocks = function () {
