@@ -277,6 +277,11 @@ angular.module('prodapps')
         prodooMachine(item);
     };
 
+    $scope.openInNewTab = function(item) {
+      let prep_url = item.quality_form_url+item.quality_form_order_number_id+'='+item.lot_number
+      window.open(prep_url, '_blank');
+    };
+
     $scope.take = function(item) {
       item._v.lock = true;
       jsonRpc.call('mrp.production.workcenter.line', 'book', [[item.id], $scope.workcenter]).then(function (hasSucceed) {
