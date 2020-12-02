@@ -2,7 +2,10 @@
 angular.module('prodapps')
 .controller('OrderListCtrl', ['$scope', 'limitToFilter', 'filterFilter', 'orderByFilter', 'prodooConfig', '$ionicScrollDelegate', '$timeout', function ($scope, limitToFilter, filterFilter, orderByFilter, prodooConfig, $ionicScrollDelegate, $timeout) {
     //scope.sync is inherited by parent scope (assemblyCtrl)
-    $scope.filteredList = { notDone: []};
+    $scope.filteredList = { 
+        notDone: [],
+        Done: []
+    };
 
     $scope.$watch('sync.data', function (newVal, oldVal, scope) {
       //refresh list of order (in the right pane)

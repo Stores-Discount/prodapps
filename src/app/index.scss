@@ -10,6 +10,29 @@
     overflow: hidden !important;
 }
 
+.oe_list_content {
+    border-color:#cacaca;
+    border-style:solid;
+    border-style:solid;
+    width:100%
+}
+
+.oe_list_content thead td {
+    border: 1px solid;
+    border-color:#cacaca;
+    background-color: #bacaca;
+    font-weight: bold;
+    font-size: 150%;
+    text-align: left;
+}
+
+.oe_list_content tbody td {
+    border: 1px solid;
+    border-color:#cacaca;
+    font-size: 120%;
+    text-align: left;
+}
+
 body {
   padding-top: 0 !important;
 }
