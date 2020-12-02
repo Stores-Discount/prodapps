@@ -1,0 +1,20 @@
+<div class="container-fluid">
+    <h2>Technical Description Check Point (TDCP)</h2>
+
+    <div class="input-group">
+      <div class="input-group-addon" >
+          <label for="searchInput">
+              <span class="glyphicon glyphicon-search"></span>
+          </label>
+      </div>
+      <input ng-model="tdcp.lot_number" ng-model-options="{ debounce: 100 }" class="form-control haute-ligne" id="searchInput" placeholder="search" ng-focus="eraseSearch()">
+  </div>
+</div>
+
+<ion-scroll class="prodoo-ion-scroll" delegate-handle="leftScroll" direction="y">
+   <ul class="list-group tab" ng-show="tdcp.lot_number">
+      <li ng-repeat="item in tdcp.search" class="list-group-item list-link">
+          <div ng-bind-html="item.table_tech_description"></div>
+      </li>
+  </ul>
+</ion-scroll>
