@@ -45,7 +45,7 @@ angular.module('prodapps', ['ngAnimate', 'ngSanitize', 'ui.router', 'mgcrea.ngSt
             }
         })
         .state('main.tdcp', {
-            url: '/tdcp',
+            url: '/tdcp/{workcenter:int}',
             templateUrl: 'app/tdcp/tdcp.html',
             controller: 'TdcpCtrl',
             resolve: {
