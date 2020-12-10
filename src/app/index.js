@@ -44,6 +44,14 @@ angular.module('prodapps', ['ngAnimate', 'ngSanitize', 'ui.router', 'mgcrea.ngSt
                 'apps': 'apps'
             }
         })
+        .state('main.tdcp', {
+            url: '/tdcp/{workcenter:int}',
+            templateUrl: 'app/tdcp/tdcp.html',
+            controller: 'TdcpCtrl',
+            resolve: {
+                'apps': 'apps'
+            }
+        })
         ;
 
     $urlRouterProvider.otherwise('/');
