@@ -134,6 +134,7 @@
                                     <th>Height (mm)</th>
                                     <th>Width (mm)</th>
                                     <th>Location</th>
+                                    <th ng-show="sync.current.item.scrap_d_qty">Quantity</th>
                                     <th>Material (A00 code)</th>
                                 </tr>
                                 <tr>
@@ -145,6 +146,9 @@
                                     </td>
                                     <td>
                                         <input class="haute-ligne col-md-10" required="true" size="16" type="text" ng-model="scrap.location">
+                                    </td>
+                                    <td ng-show="sync.current.item.scrap_d_qty">
+                                        <input class="haute-ligne col-md-10" size="16" type="number" ng-model="scrap.qty">
                                     </td>
                                     <td>
                                         <input class="haute-ligne col-md-10" size="16" type="text" ng-model="scrap.material">
@@ -172,6 +176,8 @@
                                     <th>Height</th>
                                     <th>Width</th>
                                     <th>Location</th>
+                                    <th ng-show="sync.current.item.scrap_d_qty">Quantity</th>
+                                    <th>Material</th>
                                     <th>Use</th>
                                 </tr>
                                 <tr class="success" ng-repeat="item in scrap.avaiable">
@@ -183,6 +189,12 @@
                                     </td>
                                     <td>
                                         {{ item.location }}
+                                    </td>
+                                    <td ng-show="sync.current.item.scrap_d_qty">
+                                        {{ item.qty }}
+                                    </td>
+                                    <td>
+                                        {{ item.material }}
                                     </td>
                                     <td>
                                         <div class="btn-group">
