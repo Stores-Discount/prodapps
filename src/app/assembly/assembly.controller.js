@@ -43,7 +43,7 @@ angular.module('prodapps')
         if (newVal._v.suggestedRacks.length == 0) {
 
           
-          newVal._v.suggestedRacks = createArray(newVal.qty).map(function (useless, idx) { //for (idx in 1..5)
+          newVal._v.suggestedRacks = createArray(newVal.number_of_lines).map(function (useless, idx) { //for (idx in 1..5)
             
             //return [ [a1,b1], [a2,b2], [an,bn]] with n = qty
             return newVal.components.map(function (component) {
@@ -87,7 +87,7 @@ angular.module('prodapps')
         }
 
         if (!newVal._v.scans) //do it only once (because user may have entered some date)
-          newVal._v.scans = createArray(newVal.qty).map(function () {
+          newVal._v.scans = createArray(newVal.number_of_lines).map(function () {
             //if item.components is [ {name: 'tissu'}, { name:'profile'}]
             // and item.qty = 2
             // then scans whould be [ [null, null], [null, null]]
@@ -96,10 +96,10 @@ angular.module('prodapps')
           });
       
         if (!newVal._v.locks) //do it only once (because some lines may be terminated )
-          newVal._v.locks = createArray(newVal.qty).map(function () { return false; });
+          newVal._v.locks = createArray(newVal.number_of_lines).map(function () { return false; });
         
         //do it each time
-        newVal._v.lines = createArray(newVal.qty).map(function (unused, idx) {
+        newVal._v.lines = createArray(newVal.number_of_lines).map(function (unused, idx) {
           var l = {};
           //for storing the scans - only usefull for the operator for keeping track of progression
           //and ensuring she selected the good input product
